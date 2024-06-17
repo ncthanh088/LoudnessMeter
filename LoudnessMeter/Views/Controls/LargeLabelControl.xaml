@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="LoudnessMeter.Views.Controls.LargeLabelControl"
+             xmlns:controls="clr-namespace:LoudnessMeter.Views.Controls">
+
+    <ContentView.Resources>
+        <!-- Define ControlTemplate for LargeLabelControl -->
+        <ControlTemplate x:Key="LargeLabelControlTemplate">
+            <Border Background="{TemplateBinding BackgroundColor.Color}" Padding="0" Margin="0" StrokeThickness="0">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="{TemplateBinding LargeText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Medium" />
+                    <Label Text="{TemplateBinding SmallText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Small" />
+                </VerticalStackLayout>
+            </Border>
+        </ControlTemplate>
+        <!-- Define Styles -->
+        <Style TargetType="controls:LargeLabelControl">
+            <Setter Property="ControlTemplate" Value="{StaticResource LargeLabelControlTemplate}"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource MidBlueBrush}" />
+        </Style>
+
+        <!-- Define ControlTemplate for LargeLabelControlButtonTemplate -->
+        <ControlTemplate x:Key="LargeLabelControlButtonTemplate">
+            <VerticalStackLayout>
+                <Label Text="{TemplateBinding LargeText}" TextColor="{TemplateBinding TextColor}" Padding="15,3" BackgroundColor="{TemplateBinding BackgroundColor}" HorizontalOptions="Center" FontSize="21" />
+                <Label Text="{TemplateBinding SmallText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="11" Margin="0,5,0,5" />
+            </VerticalStackLayout>
+        </ControlTemplate>
+        <!-- Define Styles -->
+        <Style TargetType="controls:LargeLabelControl" x:Key="ButtonStyle">
+            <Setter Property="BackgroundColor" Value="{DynamicResource MidBlueBrush}" />
+            <Setter Property="ControlTemplate" Value="{StaticResource LargeLabelControlButtonTemplate}">
+            </Setter>
+        </Style>
+    </ContentView.Resources>
+</ContentView>
