@@ -28,4 +28,4 @@ To run the Sound Level Meter application:
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/ncthanh088/LoudnessMeter.git
