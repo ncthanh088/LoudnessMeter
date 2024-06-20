@@ -25,4 +25,6 @@ public interface IAudioCaptureService
     /// A callback for when the next chunk of audio data is available
     /// </summary>
     event Action<AudioChunkData> AudioChunkAvailable;
+
+    double CurrentDecibel { get; }
 }
