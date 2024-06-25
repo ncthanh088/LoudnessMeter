@@ -61,12 +61,21 @@
 	  <None Remove="Platforms\Android\libs\armeabi-v7a\libbass.so" />
 	  <None Remove="Platforms\Android\libs\x86\libbass.so" />
 	  <None Remove="Platforms\Android\libs\x86_64\libbass.so" />
+	  <None Remove="Resources\Images\about_dark.svg" />
+	  <None Remove="Resources\Images\about_light.svg" />
 	  <None Remove="Resources\Images\lockdark.svg" />
 	  <None Remove="Resources\Images\locklight.svg" />
 	  <None Remove="Resources\Images\loudnessdark.svg" />
 	  <None Remove="Resources\Images\loudnesslight.svg" />
-	  <None Remove="Resources\Images\play.svg" />
-	  <None Remove="Resources\Images\setting.svg" />
+	  <None Remove="Resources\Images\play_dark.svg" />
+	  <None Remove="Resources\Images\play_light.svg" />
+	  <None Remove="Resources\Images\restart_dark.svg" />
+	  <None Remove="Resources\Images\restart_light.svg" />
+	  <None Remove="Resources\Images\resumed_dark.svg" />
+	  <None Remove="Resources\Images\setting_dark.svg" />
+	  <None Remove="Resources\Images\setting_light.svg" />
+	  <None Remove="Resources\Images\theme_dark.svg" />
+	  <None Remove="Resources\Images\theme_light.svg" />
 	  <None Remove="Resources\Raw\washing.json" />
 	</ItemGroup>
 
@@ -95,17 +104,4 @@
 		<PackageReference Include="NWaves" Version="0.9.6" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="Views\Controls\LargeLabelControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	</ItemGroup>
-
-  <ItemGroup>
-    <None Update="bass.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

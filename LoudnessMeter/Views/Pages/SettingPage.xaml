@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="LoudnessMeter.Views.Pages.SettingPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:LoudnessMeter.Views.Controls">
+    <StackLayout Padding="20" BackgroundColor="{DynamicResource BackgroundColor}">
+        <Label
+            Margin="0,0,0,20"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="Settings"
+            TextColor="{DynamicResource TextColor}" />
+
+        <Label
+            FontSize="18"
+            HorizontalOptions="Start"
+            Text="General Settings"
+            TextColor="{DynamicResource TextColor}" />
+
+        <StackLayout Margin="0,10,0,0" Orientation="Horizontal">
+            <Label
+                Text="Enable Notifications"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+
+            <Switch
+                x:Name="notificationsSwitch"
+                HorizontalOptions="EndAndExpand"
+                VerticalOptions="Center" />
+        </StackLayout>
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Sound Measurement Unit"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Picker
+                x:Name="unitPicker"
+                HorizontalOptions="EndAndExpand"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>dB</x:String>
+                        <x:String>dBA</x:String>
+                        <x:String>dBC</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Warning Threshold (dB)"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Entry
+                x:Name="thresholdEntry"
+                HorizontalOptions="EndAndExpand"
+                Keyboard="Numeric"
+                Placeholder="Enter threshold"
+                VerticalOptions="Center" />
+        </StackLayout>
+
+        <Label
+            Margin="0,20,0,0"
+            FontSize="18"
+            HorizontalOptions="Start"
+            Text="Display Settings"
+            TextColor="{DynamicResource TextColor}" />
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Theme"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Picker
+                x:Name="themePicker"
+                HorizontalOptions="EndAndExpand"
+                VerticalOptions="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Light</x:String>
+                        <x:String>Dark</x:String>
+                        <x:String>System Default</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Refresh Rate (ms)"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Entry
+                x:Name="refreshRateEntry"
+                HorizontalOptions="EndAndExpand"
+                Keyboard="Numeric"
+                Placeholder="Enter refresh rate"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+        </StackLayout>
+
+        <Label
+            Margin="0,20,0,0"
+            FontSize="18"
+            HorizontalOptions="Start"
+            Text="Recording Settings" />
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Recording Format"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Picker
+                x:Name="recordingFormatPicker"
+                HorizontalOptions="EndAndExpand"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>CSV</x:String>
+                        <x:String>JSON</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+        </StackLayout>
+
+        <StackLayout Margin="10,0,0,0" Orientation="Horizontal">
+            <Label
+                Text="Recording Duration (s)"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+            <Entry
+                x:Name="recordingDurationEntry"
+                HorizontalOptions="EndAndExpand"
+                Keyboard="Numeric"
+                Placeholder="Enter duration"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+        </StackLayout>
+
+        <Button
+            Margin="20,30,20,0"
+            BackgroundColor="{DynamicResource ButtonColor}"
+            HorizontalOptions="Center"
+            Text="Save"
+            TextColor="{DynamicResource TextColor}" />
+
+    </StackLayout>
+
+
+</ContentPage>

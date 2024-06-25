@@ -1,19 +1,21 @@
 ﻿using LoudnessMeter.Models;
 using LoudnessMeter.Services;
-using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
+using LoudnessMeter.Extentions;
 using System.Collections.ObjectModel;
 using DevExpress.Maui.Charts;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace LoudnessMeter.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-
     [ObservableProperty] private string _boldTitle = "SOUND";
-
+    
     [ObservableProperty] private string _regularTitle = "LEVEL METER";
+    
+    [ObservableProperty] private string _membership = "BUY PRO";
 
     [ObservableProperty] private string _decibel = "0 dB";
 
@@ -22,6 +24,8 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty] private string _decibelMax = "0 dB";
 
     [ObservableProperty] private string _decibelMin = "0 dB";
+    
+    [ObservableProperty] private string _soundLevel = nameof(Enums.SoundLevel.Silent).SplitUpperCase();
 
     [ObservableProperty] private double _volumeMarkerIndicator;
 
@@ -34,7 +38,9 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty] private NumericRange _visualRangeAxisY;
 
     private int _updateCounter;
-    
+
+    private bool isRecordingPaused = false;
+
     private readonly IAudioCaptureService _audioCaptureService;
 
     public MainViewModel(IAudioCaptureService audioCaptureService)
@@ -52,9 +58,20 @@ public partial class MainViewModel : ObservableObject
         });
     }
 
-    public void PauseRecordAudio()
+    public void PausedOrResumed()
     {
-        _audioCaptureService.Stop();
+        if (isRecordingPaused)
+        {
+            // Resume recording
+            _audioCaptureService.Resumed();
+            isRecordingPaused = false;
+        }
+        else
+        {
+            // Pause recording
+            _audioCaptureService.Paused();
+            isRecordingPaused = true;
+        }
     }
 
     [RelayCommand]
@@ -100,6 +117,7 @@ public partial class MainViewModel : ObservableObject
 
             // Start capturing
             _audioCaptureService.Start();
+            isRecordingPaused = false;
         }
         catch (Exception ex)
         {
@@ -116,6 +134,7 @@ public partial class MainViewModel : ObservableObject
         // Every time counter is at 0...
         if (_updateCounter == 0)
         {
+            SoundLevel = $"{_audioCaptureService.GetSoundLevelDescription(audioChuckData.Decibel)}";
             Decibel = $"{Math.Max(-60, audioChuckData.Decibel):0.0} dB";
             DecibelAverage = $"{Math.Max(-60, audioChuckData.DecibelAverage):0.0} dB";
             DecibelMax = $"{Math.Max(-60, audioChuckData.DecibelMax):0.0} dB";
