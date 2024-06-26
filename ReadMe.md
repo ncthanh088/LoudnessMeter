@@ -1,6 +1,6 @@
 ﻿# Sound Level Meter Application
 
-<img src="./LoundMeter.jpeg" alt="Sound Level Meter Application" width="160" height="300">
+<img src="./SoundLevelMeter.jpeg" alt="Sound Level Meter Application" width="160" height="300">
 
 
 This is a sound level meter application built with .NET MAUI, utilizing ManagedBass for audio processing, and designed following the MVVM architectural pattern.

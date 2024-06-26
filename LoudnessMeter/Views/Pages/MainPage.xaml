@@ -68,7 +68,7 @@
         <Grid Grid.Row="1" BackgroundColor="{DynamicResource BackgroundColor}" 
               RowDefinitions="Auto, Auto, Auto, *" VerticalOptions="End">
 
-            <!--  Volume Meter Gauge  -->
+            <!--  Volume Meter Gauges  -->
             <Grid Grid.Row="0" Margin="0,0,0,10" Padding="0" RowDefinitions="Auto,Auto,Auto">
                 <dxga:RadialGauge Grid.Row="0" HeightRequest="230">
                     <dxga:RadialScale

@@ -17,6 +17,7 @@
                 <Grid.Resources>
                     <Style TargetType="ImageButton">
                         <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Opacity" Value="0.8"/>
                     </Style>
                 </Grid.Resources>
 
