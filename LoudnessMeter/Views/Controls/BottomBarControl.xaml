@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="LoudnessMeter.Views.Controls.BottomBarControl"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Grid RowDefinitions="*">
+        <Grid
+            Padding="8"
+            BackgroundColor="{DynamicResource BackgroundColor}"
+            HeightRequest="60"
+            VerticalOptions="Center">
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="*,*,*,*,*"
+                VerticalOptions="Center">
+                <Grid.Resources>
+                    <Style TargetType="ImageButton">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Opacity" Value="0.8"/>
+                    </Style>
+                </Grid.Resources>
+
+                <!--  Theme  -->
+                <ImageButton Grid.Column="0">
+                    <ImageButton.Source>
+                        <AppThemeBinding Dark="theme_dark.png" Light="theme_light.png" />
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <!--  Restart  -->
+                <ImageButton Grid.Column="1">
+                    <ImageButton.Source>
+                        <AppThemeBinding Dark="restart_dark.png" Light="restart_light.png" />
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <!--  Pause/Resume  -->
+                <ImageButton Grid.Column="2" Clicked="OnPauseOrResumeRecording">
+                    <ImageButton.Source>
+                        <AppThemeBinding Dark="resumed_dark.png" Light="resumed_light.png" />
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <!--  About  -->
+                <ImageButton Grid.Column="3" Clicked="OnAboutButtonClicked">
+                    <ImageButton.Source>
+                        <AppThemeBinding Dark="about_dark.png" Light="about_light.png" />
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <!--  Settings  -->
+                <ImageButton Grid.Column="4" Clicked="OnSettingsButtonClicked">
+                    <ImageButton.Source>
+                        <AppThemeBinding Dark="setting_dark.png" Light="setting_light.png" />
+                    </ImageButton.Source>
+                </ImageButton>
+            </Grid>
+        </Grid>
+    </Grid>
+
+</ContentView>

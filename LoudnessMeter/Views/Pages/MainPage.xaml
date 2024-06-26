@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="LoudnessMeter.Views.Pages.MainPage"
+            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:controls="clr-namespace:LoudnessMeter.Views.Controls"
+            xmlns:dxga="clr-namespace:DevExpress.Maui.Gauges;assembly=DevExpress.Maui.Gauges"
+            xmlns:dxc="clr-namespace:DevExpress.Maui.Charts;assembly=DevExpress.Maui.Charts"
+            xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
+            Title="Sound Level Meter">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior x:Name="statusBar"/>
+    </Page.Behaviors>
+
+    <Grid RowDefinitions="Auto,*,Auto" BackgroundColor="{DynamicResource BackgroundColor}">
+        <!-- Title bar -->
+        <Grid Grid.Row="0"
+              HeightRequest="60"
+              ColumnDefinitions="Auto, *, Auto"
+              BackgroundColor="{DynamicResource BackgroundColor}">
+            <Grid.Resources>
+                <Style TargetType="ImageButton">
+                    <Setter Property="Background"
+                            Value="Transparent"></Setter>
+                    <Setter Property="Opacity"
+                            Value="0.8"></Setter>
+                </Style>
+                <Style TargetType="Button">
+                    <Setter Property="FontSize" Value="8"/>
+                    <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}"/>
+                    <Setter Property="BackgroundColor" Value="{DynamicResource ButtonColor}"/>
+                    <Setter Property="Padding" Value="8, 0"/>
+                    <Setter Property="Margin" Value="0, 0"/>
+                    <Setter Property="HeightRequest" Value="30"/>
+                    <Setter Property="CornerRadius" Value="4"/>
+                </Style>
+            </Grid.Resources>
+
+            <ImageButton Grid.Column="0"
+                         WidthRequest="50"
+                         Padding="0"
+                         Margin="8,8,0,8"
+                         Opacity="0.8">
+                <ImageButton.Source>
+                    <AppThemeBinding Light="loudnesslight.png"
+                                     Dark="loudnessdark.png"/>
+                </ImageButton.Source>
+            </ImageButton>
+
+            <StackLayout Grid.Column="1" Orientation="Horizontal" 
+                         VerticalOptions="Center" HorizontalOptions="Center" Margin="0,0,16,0">
+                <Label FontAttributes="Bold" TextColor="{DynamicResource TextColor}" Text="{Binding BoldTitle}" Margin="0,0,8,0"></Label>
+                <Label FontAttributes="None" TextColor="{DynamicResource TextColor}" Text="{Binding RegularTitle}" Margin="0,0,8,0"></Label>
+            </StackLayout>
+
+            <ImageButton Grid.Column="2"
+                         Margin="0,0,8,0"
+                         WidthRequest="26"
+                         HeightRequest="26">
+                <ImageButton.Source>
+                    <AppThemeBinding Light="locklight.png"
+                                     Dark="lockdark.png"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </Grid>
+
+        <!--Content-->
+        <Grid Grid.Row="1" BackgroundColor="{DynamicResource BackgroundColor}" 
+              RowDefinitions="Auto, Auto, Auto, *" VerticalOptions="End">
+
+            <!--  Volume Meter Gauges  -->
+            <Grid Grid.Row="0" Margin="0,0,0,10" Padding="0" RowDefinitions="Auto,Auto,Auto">
+                <dxga:RadialGauge Grid.Row="0" HeightRequest="230">
+                    <dxga:RadialScale
+                        EndValue="100"
+                        MajorTickmarkCount="11"
+                        MinorTickmarkColor="{DynamicResource TextColor}"
+                        MinorTickmarkCount="1"
+                        ShowTickmarkLabels="True"
+                        StartAngle="180"
+                        StartValue="0"
+                        SweepAngle="180"
+                        TickmarkLabelColor="{DynamicResource TextColor}"
+                        TickmarkLabelFormat="0"
+                        TickmarkLabelOffset="2"
+                        TickmarkLabelPosition="Inside">
+                        <dxga:RangeIndicator EndValue="85" StartValue="60" />
+                        <dxga:NeedleIndicator Value="{Binding VolumeNeedleIndicator}" />
+                        <dxga:MarkerIndicator Value="{Binding VolumeMarkerIndicator}" />
+                    </dxga:RadialScale>
+                </dxga:RadialGauge>
+                <!--  Decibel Value  -->
+                <StackLayout Grid.Row="1" Margin="0,10,0,0" HorizontalOptions="Center">
+                    <Label FontSize="Large" Text="{Binding Decibel}" TextColor="{DynamicResource TextColor}" />
+                </StackLayout>
+                <StackLayout Grid.Row="2" Padding="5" HorizontalOptions="Center">
+                    <Label FontSize="Small" Text="{Binding SoundLevel}" TextColor="{DynamicResource TextColor}" 
+                           FontAttributes="Italic" />
+                </StackLayout>
+            </Grid>
+
+            <!--  Sound Meter Values  -->
+            <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+                <controls:LargeLabelControl Grid.Column="0" BackgroundColor="{DynamicResource BackgroundColor}"
+                    LargeText="MIN" SmallText="{Binding DecibelMin}" TextColor="{DynamicResource TextColor}" />
+
+                <controls:LargeLabelControl Grid.Column="1" BackgroundColor="{DynamicResource BackgroundColor}" 
+                    LargeText="AVG" SmallText="{Binding DecibelAverage}" TextColor="{DynamicResource TextColor}" />
+
+                <controls:LargeLabelControl Grid.Column="2" BackgroundColor="{DynamicResource BackgroundColor}" 
+                    LargeText="MAX" SmallText="{Binding DecibelMax}" TextColor= "{DynamicResource TextColor}" />
+            </Grid>
+
+            <!--  Decibel Chart  -->
+            <Grid Grid.Row="2" HeightRequest="230">
+                <dxc:ChartView Grid.Row="2" BackgroundColor="{DynamicResource BackgroundColor}">
+                    <dxc:ChartView.Series>
+                        <dxc:AreaSeries DisplayName="Decibel Chart">
+                            <dxc:AreaSeries.Data>
+                                <dxc:SeriesDataAdapter ArgumentDataMember="Time" DataSource="{Binding DecibelValues}">
+                                    <dxc:ValueDataMember Member="Value" Type="Value" />
+                                </dxc:SeriesDataAdapter>
+                            </dxc:AreaSeries.Data>
+                            <dxc:AreaSeries.Style>
+                                <dxc:AreaSeriesStyle Fill="#9A82DB">
+                                    <dxc:AreaSeriesStyle.FillEffect>
+                                        <dxc:TransparencyGradient BaselineAlpha="0" SeriesLineAlpha="0.3" />
+                                    </dxc:AreaSeriesStyle.FillEffect>
+                                </dxc:AreaSeriesStyle>
+                            </dxc:AreaSeries.Style>
+                        </dxc:AreaSeries>
+                    </dxc:ChartView.Series>
+
+                    <dxc:ChartView.AxisX>
+                        <dxc:NumericAxisX GridAlignment="10" Range="{Binding VisualRangeAxisX}">
+                            <dxc:NumericAxisX.Label>
+                                <dxc:AxisLabel>
+                                    <dxc:AxisLabel.Style>
+                                        <dxc:AxisLabelStyle>
+                                            <dxc:AxisLabelStyle.TextStyle>
+                                                <dxc:TextStyle Size="12" Color="{DynamicResource TextColor}" />
+                                            </dxc:AxisLabelStyle.TextStyle>
+                                        </dxc:AxisLabelStyle>
+                                    </dxc:AxisLabel.Style>
+                                </dxc:AxisLabel>
+                            </dxc:NumericAxisX.Label>
+                        </dxc:NumericAxisX>
+                    </dxc:ChartView.AxisX>
+
+                    <dxc:ChartView.AxisY>
+                        <dxc:NumericAxisY
+                    AlwaysShowZeroLevel="False"
+                    GridAlignment="20"
+                    Range="{Binding VisualRangeAxisY}">
+                            <dxc:NumericAxisY.Label>
+                                <dxc:AxisLabel>
+                                    <dxc:AxisLabel.Style>
+                                        <dxc:AxisLabelStyle>
+                                            <dxc:AxisLabelStyle.TextStyle>
+                                                <dxc:TextStyle Size="12" Color="{DynamicResource TextColor}" />
+                                            </dxc:AxisLabelStyle.TextStyle>
+                                        </dxc:AxisLabelStyle>
+                                    </dxc:AxisLabel.Style>
+                                </dxc:AxisLabel>
+                            </dxc:NumericAxisY.Label>
+                        </dxc:NumericAxisY>
+                    </dxc:ChartView.AxisY>
+                </dxc:ChartView>
+            </Grid>
+        </Grid>
+
+        <!-- Bottom bar -->
+        <controls:BottomBarControl x:Name="bottomBar" Grid.Row="2" />
+    </Grid>
+</ContentPage>

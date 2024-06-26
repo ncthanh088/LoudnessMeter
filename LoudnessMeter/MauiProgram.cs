@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+using DevExpress.Maui;
 using LoudnessMeter.Services;
 using LoudnessMeter.ViewModels;
+using LoudnessMeter.Views.Pages;
+using Microcharts.Maui;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
@@ -13,7 +16,13 @@ namespace LoudnessMeter
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseDevExpress()
+                .UseDevExpressCharts()
+                .UseDevExpressGauges()
+                .UseDevExpressCollectionView()
+                .UseDevExpressControls()
                 .UseSkiaSharp()
+                .UseMicrocharts()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -23,7 +32,7 @@ namespace LoudnessMeter
 
             builder.Services.AddSingleton<MainViewModel>();
             builder.Services.AddSingleton<MainPage>();
-            builder.Services.AddScoped<IAudioCaptureService, BassAudioCaptureService>();
+            builder.Services.AddTransient<IAudioCaptureService, BassAudioCaptureService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

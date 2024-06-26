@@ -1,49 +1,77 @@
 ﻿using LoudnessMeter.Models;
 using LoudnessMeter.Services;
+using LoudnessMeter.Extentions;
+using System.Collections.ObjectModel;
+using DevExpress.Maui.Charts;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace LoudnessMeter.ViewModels;
 
 public partial class MainViewModel : ObservableObject
 {
-    private readonly IAudioCaptureService _audioCaptureService;
-    
-    private int _updateCounter;
-
-    private const double DecibelRuler = 130;
-
     [ObservableProperty] private string _boldTitle = "SOUND";
-
+    
     [ObservableProperty] private string _regularTitle = "LEVEL METER";
+    
+    [ObservableProperty] private string _membership = "BUY PRO";
 
     [ObservableProperty] private string _decibel = "0 dB";
 
     [ObservableProperty] private string _decibelAverage = "0 AVG";
-    
+
     [ObservableProperty] private string _decibelMax = "0 dB";
-    
+
     [ObservableProperty] private string _decibelMin = "0 dB";
+    
+    [ObservableProperty] private string _soundLevel = nameof(Enums.SoundLevel.Silent).SplitUpperCase();
 
-    [ObservableProperty] private bool _channelConfigurationListIsOpen;
+    [ObservableProperty] private double _volumeMarkerIndicator;
 
-    [ObservableProperty] private double _volumePercentPosition;
+    [ObservableProperty] private double _volumeNeedleIndicator;
 
-    [ObservableProperty] private double _volumeContainerHeight;
+    [ObservableProperty] private ObservableCollection<DecibelValue> _decibelValues = new();
 
-    [ObservableProperty] private double _volumeBarHeight;
+    [ObservableProperty] private NumericRange _visualRangeAxisX;
 
-    [ObservableProperty] private double _volumeBarMaskHeight;
+    [ObservableProperty] private NumericRange _visualRangeAxisY;
+
+    private int _updateCounter;
+
+    private bool isRecordingPaused = false;
+
+    private readonly IAudioCaptureService _audioCaptureService;
 
     public MainViewModel(IAudioCaptureService audioCaptureService)
     {
+        PrepareChartConfig();
         _audioCaptureService = audioCaptureService;
-        VolumeBarMaskHeight = VolumeContainerHeight;
+        Task.Run(async () =>
+        {
+            while (true)
+            {
+                var decibel = _audioCaptureService.CurrentDecibel;
+                await MainThread.InvokeOnMainThreadAsync(() => UpdateChart(decibel));
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+        });
     }
 
-    public void PauseRecordAudio()
+    public void PausedOrResumed()
     {
-        _audioCaptureService.Stop();
+        if (isRecordingPaused)
+        {
+            // Resume recording
+            _audioCaptureService.Resumed();
+            isRecordingPaused = false;
+        }
+        else
+        {
+            // Pause recording
+            _audioCaptureService.Paused();
+            isRecordingPaused = true;
+        }
     }
 
     [RelayCommand]
@@ -52,7 +80,6 @@ public partial class MainViewModel : ObservableObject
         try
         {
             await RequestRecordAudioPermissionAsync();
-
             StartCapture(deviceId: 1);
         }
         catch (Exception ex)
@@ -90,6 +117,7 @@ public partial class MainViewModel : ObservableObject
 
             // Start capturing
             _audioCaptureService.Start();
+            isRecordingPaused = false;
         }
         catch (Exception ex)
         {
@@ -106,18 +134,51 @@ public partial class MainViewModel : ObservableObject
         // Every time counter is at 0...
         if (_updateCounter == 0)
         {
+            SoundLevel = $"{_audioCaptureService.GetSoundLevelDescription(audioChuckData.Decibel)}";
             Decibel = $"{Math.Max(-60, audioChuckData.Decibel):0.0} dB";
             DecibelAverage = $"{Math.Max(-60, audioChuckData.DecibelAverage):0.0} dB";
             DecibelMax = $"{Math.Max(-60, audioChuckData.DecibelMax):0.0} dB";
             DecibelMin = $"{Math.Max(-60, audioChuckData.DecibelMin):0.0} dB";
         }
 
-        // Set volume bar height
-        var decibelHeight = (VolumeBarHeight * audioChuckData.Decibel) / DecibelRuler;
-        VolumeBarMaskHeight = Math.Min(VolumeBarHeight, VolumeBarHeight - decibelHeight);
+        // Set Volume Guages
+        VolumeNeedleIndicator = audioChuckData.Decibel;
+        VolumeMarkerIndicator = audioChuckData.DecibelMax;
+    }
 
-        // Set Volume Arrow height
-        var decibelAverageHeight = (VolumeContainerHeight * audioChuckData.DecibelMax) / DecibelRuler;
-        VolumePercentPosition = Math.Min(VolumeContainerHeight, VolumeContainerHeight- decibelAverageHeight);
+    private void UpdateChart(double decibel)
+    {
+        try
+        {
+            var currentTime = DateTime.Now.Second;
+            var decibelValue = new DecibelValue(currentTime, (float)decibel);
+            if (DecibelValues.Count >= 60)
+            {
+                DecibelValues.RemoveAt(0);
+            }
+            DecibelValues.Add(decibelValue);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
+    }
+
+    private void PrepareChartConfig()
+    {
+        VisualRangeAxisX = new NumericRange()
+        {
+            Min = 0,
+            Max = 60
+        };
+
+        VisualRangeAxisY = new NumericRange()
+        {
+            Min = 0,
+            Max = 100
+        };
+
+        DecibelValues = new ObservableCollection<DecibelValue>();
     }
 }

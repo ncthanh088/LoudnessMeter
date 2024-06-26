@@ -12,7 +12,7 @@ public partial class LargeLabelControl : ContentView
         = BindableProperty.Create(nameof(TextColor), typeof(Color), typeof(LargeLabelControl), defaultValue: Colors.White);
 
     public static new readonly BindableProperty BackgroundColorProperty
-        = BindableProperty.Create(nameof(BackgroundColor), typeof(SolidColorBrush), typeof(LargeLabelControl), defaultValue: default(SolidColorBrush));
+        = BindableProperty.Create(nameof(BackgroundColor), typeof(Color), typeof(LargeLabelControl), defaultValue: default(Color));
 
     public string LargeText
     {
@@ -32,9 +32,9 @@ public partial class LargeLabelControl : ContentView
         set => SetValue(TextColorProperty, value);
     }
 
-    public new SolidColorBrush BackgroundColor
+    public new Color BackgroundColor
     {
-        get => (SolidColorBrush)GetValue(LargeLabelControl.BackgroundColorProperty);
+        get => (Color)GetValue(LargeLabelControl.BackgroundColorProperty);
         set => SetValue(LargeLabelControl.BackgroundColorProperty, value);
     }
 

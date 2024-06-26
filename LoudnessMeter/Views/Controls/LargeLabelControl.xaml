@@ -7,10 +7,10 @@
     <ContentView.Resources>
         <!-- Define ControlTemplate for LargeLabelControl -->
         <ControlTemplate x:Key="LargeLabelControlTemplate">
-            <Border Background="{TemplateBinding BackgroundColor.Color}" Padding="0" Margin="0" StrokeThickness="0">
+            <Border BackgroundColor="{TemplateBinding BackgroundColor}" Padding="10" Margin="0" StrokeThickness="0">
                 <VerticalStackLayout VerticalOptions="Center">
-                    <Label Text="{TemplateBinding LargeText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Medium" />
-                    <Label Text="{TemplateBinding SmallText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Small" />
+                    <Label Text="{TemplateBinding LargeText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Small" />
+                    <Label Text="{TemplateBinding SmallText}" TextColor="{TemplateBinding TextColor}" HorizontalOptions="Center" FontSize="Micro" />
                 </VerticalStackLayout>
             </Border>
         </ControlTemplate>
